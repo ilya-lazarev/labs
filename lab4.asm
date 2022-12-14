@@ -143,6 +143,7 @@ start:
   mov ax, seg data
   mov ds, ax
   mov es, ax
+  cld
 
   clrwin 0, 0, 79, 24, 0fh
   clrwin infl, inft, infr, infb, infbg
@@ -369,8 +370,8 @@ to_str proc
   xor bp, bp; флаг, означает, что ненулевая цифра уже попалась
   test ax, 8000h
   jns @@p
-  mov [di], byte ptr '-'
-  inc di
+  mov al, '-'
+  stosb
   neg ax
 
 @@p:
@@ -387,8 +388,7 @@ to_str proc
 @@s:
   mov bp, 1 ; установить флаг
   add al, '0' ; сохранить цифру
-  mov [di], al
-  inc di
+  stosb
 @@n:
   mov ax, dx; остаток от деления на делитель в bx
   call div10 ; разделить bx на 10
